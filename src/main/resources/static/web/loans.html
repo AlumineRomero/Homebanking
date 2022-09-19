@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prestamos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Giga&family=Poppins:wght@300&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/978a01b828.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./assets/styles/styleDarkMode.css">
+    <link rel="stylesheet" href="./assets/styles/styleLoader.css">
+    <link rel="stylesheet" href="./assets/styles/styles.css">
+    <link rel="stylesheet" href="./assets/styles/styleLoans.css">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body id="app" class="container-fluid d-flex p-0">
+    <header class="col-3 col-lg-2">
+        <nav class="container-fluid " id="nav">
+            <div class="row flex-nowrap">
+                <div class="col-12 px-0">
+                    <div
+                        class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="#"
+                            class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                            <span class="fs-5 d-none d-sm-inline aluBank">MontBank</span>
+                        </a>
+                        <div class="dropdown pb-4">
+                            <a href="#"
+                                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHgwL4r2DN1qg91OOqIViiv0Uxw-9yqo-PiQ&usqp=CAU"
+                                    alt="hugenerd" width="30" height="30" class="rounded-circle">
+                                <span class="d-none d-sm-inline mx-1">{{client.name}} {{client.lastName}}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+                                aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="#" @click="areYouSure">Cerrar sesión</a></li>
+                            </ul>
+                        </div>
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                            id="menu">
+                            <li class="nav-item">
+                                <a href="./accounts.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Inicio</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./cards.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-credit-card"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Tarjetas</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./loans.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-piggy-bank"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Prestamos</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="social-media container d-flex flex-wrap">
+                                    <a class="icon-mode" @click="darkMode('dark')"><i class="fas fa-moon"></i></a>
+                                    <a class="icon-mode" @click="darkMode('light')"><i class="fas fa-sun"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="col-9 col-lg-10 container-fluid d-flex flex-wrap align-items-center justify-content-around gap-1"
+        id="main">
+        <div class="col-12 container d-flex justify-content-around align-items-center flex-wrap gap-2">
+            <h2 class="col-12 text-center my-5 titles">Préstamos disponibles</h2>
+            <div class="profile-card transacciones" v-for="loan in loans" :id="loan.id">
+                <div class="img">
+                    <img :src="loan.image" oncontextmenu="return false">
+                </div>
+                <div class="caption container d-flex flex-column align-items-center justify-content-around">
+                    <h4>{{loan.name}}</h4>
+                    <p class="mb-0 text-center">Podés solicitar hasta:</p>
+                    <h5>{{moneyFormat.format(loan.maxAmount)}}</h5>
+                    <p class="mb-0 text-center">Tasa de interés:</p>
+                    <h6>{{percentFormat.format(loan.interest)}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 container d-flex justify-content-around align-items-center flex-wrap gap-2">
+            <form action=""
+                class="transacciones container d-flex flex-column justify-content-evenly align-items-center m-5 p-3 createCards"
+                id="requestLoan">
+                <h2 class="text-center">Solicitar un préstamo</h2>
+                <div class="container d-flex flex-column">
+                    <label for="sourceAccounts">Seleccioná el préstamo</label>
+                    <select name="loan" id="loan" v-model="id" class="form-select" @change="findRequestLoan">
+                        <option value="" selected>--</option>
+                        <option :value="loan.id" v-for="loan in loans">
+                            {{loan.name}}</option>
+                    </select>
+                </div>
+                <div class="container d-flex flex-column mb-2">
+                    <label for="sourceAccounts">Cuenta asociada</label>
+                    <select name="accounts" id="sourceAccounts" v-model="accountNumber" class="form-select">
+                        <option value="" selected>--</option>
+                        <option :value="account.number" v-for="account in accounts">
+                            {{account.number}}</option>
+                    </select>
+                </div>
+
+                <div class="container d-flex flex-column" v-for="loan in selectedLoan">
+                    <input class="form-control" type="number" min="0.00" :max="loan.maxAmount" step="0.05" value="1.00"
+                        placeholder="Monto a solicitar" v-model="amount">
+                    <span>Podés solicitar hasta: {{moneyFormat.format(loan.maxAmount)}}</span>
+                </div>
+                <div class="container d-flex flex-column">
+                    <label for="sourceAccounts">Cantidad de cuotas a pagar</label>
+                    <select name="description" id="description" v-model="payments" class="form-select"
+                        @change="paymentValue">
+                        <option value="" selected>--</option>
+                        <option :value="payment" v-for="payment in optionPayments">{{payment}}</option>
+                    </select>
+                    <span>Valor de cada cuota: {{moneyFormat.format(valuePayment)}}</span>
+                </div>
+                <input type="button" value="Solicitar" class="btn button" @click="confirmLoanRequest">
+            </form>
+        </div>
+    </main>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/loan-application.js"></script>
+
+</body>
+
+</html>

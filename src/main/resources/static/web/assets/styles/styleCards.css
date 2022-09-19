@@ -1,0 +1,238 @@
+.cardi {
+    width: 20rem;
+    height: 11rem;
+    -webkit-perspective: 37.5rem;
+    -moz-perspective: 37.5rem;
+    perspective: 37.5rem;
+}
+
+.card__part {
+    box-shadow: 1px 1px #aaa3a3;
+    top: 0;
+    position: absolute;
+    z-index: 1000;
+    left: 0;
+    display: inline-block;
+    width: 20rem;
+    height: 11rem;
+    border-radius: 8px;
+
+    -webkit-transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -moz-transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -ms-transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -o-transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+}
+
+.goldCard {
+    background-image: url('../img/gold-bcgd.png'), linear-gradient(-45deg, #c9a227, #926c15, #dbb42c, #c9a227, #fff2b2, #a47e1b, #926c15);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.silverCard {
+    background-image: url('../img/silver-bcgd.png'), linear-gradient(-45deg, #847577, #a6a2a2, #e5e6e4, #cfd2cd, #a6a2a2);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+}
+
+.titaniumCard {
+    background-image: url('../img/titanium-bcgd.png'), linear-gradient(-45deg, #313638, #022b3a, #9c9583, #2b2c28, #0c1821);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+}
+
+.card__front {
+    padding: 18px;
+    -webkit-transform: rotateY(0);
+    -moz-transform: rotateY(0);
+}
+
+.card__back {
+    padding: 18px 0;
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+}
+
+.card__black-line {
+    margin-top: 5px;
+    height: 38px;
+    background-color: #303030;
+}
+
+.card__logo {
+    height: 16px;
+}
+
+.card__front-logo {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+}
+
+.card__square {
+    border-radius: 5px;
+    height: 30px;
+}
+
+.card_numer {
+    display: block;
+    width: 100%;
+    word-spacing: 4px;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-weight: bolder;
+}
+
+.card_numer_titanium {
+    color: white;
+    text-shadow: 1px 2px 2px rgba(36, 32, 32, 0.849);
+}
+
+.card_numer_silverGold {
+    color: #000;
+    text-shadow: 1px 2px 2px rgba(255, 255, 255, 0.849);
+}
+
+.card__space-75 {
+    width: 75%;
+    float: left;
+}
+
+.card__space-25 {
+    width: 25%;
+    float: left;
+}
+
+.card__label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bolder;
+}
+
+.card__label_titanium {
+    color: white;
+    text-shadow: 1px 2px 2px rgba(36, 32, 32, 0.849);
+}
+
+.card__label_silverGold {
+    color: #000;
+    text-shadow: 1px 2px 2px rgba(255, 255, 255, 0.849);
+
+}
+
+.card__info {
+    margin-bottom: 0;
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 18px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+.card__info_silverGold {
+    color: #000;
+    text-shadow: 1px 2px 2px rgba(255, 255, 255, 0.849);
+}
+
+.card__info_titanium {
+    color: white;
+    text-shadow: 1px 2px 2px rgba(36, 32, 32, 0.849);
+}
+
+.card__back-content {
+    padding: 15px 15px 0;
+}
+
+.card__secret--last {
+    color: #303030;
+    text-align: right;
+    margin: 0;
+    font-size: 14px;
+}
+
+.card__secret {
+    padding: 5px 12px;
+    background-color: #fff;
+    position: relative;
+}
+
+.card__secret:before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    height: calc(100% + 6px);
+    width: calc(100% - 42px);
+    border-radius: 4px;
+    background: repeating-linear-gradient(45deg, #ededed, #ededed 5px, #f9f9f9 5px, #f9f9f9 10px);
+}
+
+.card__back-logo {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.card__back-square {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+}
+
+.cardi:hover .card__front {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+
+}
+
+.cardi:hover .card__back {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+}
+
+.cardType {
+    position: absolute;
+    top: 36px;
+    right: 15px;
+    letter-spacing: 3px;
+}
+#plusAccount{
+    position: absolute;
+    top: 1rem;
+    left: 12rem;
+}
+.cardArreglo{
+    width: fit-content;
+    height: fit-content;
+}
+@media(max-width: 450px){
+    .cardi{
+        width: 18rem;
+        height: 14rem;
+    }
+    .card__part {
+        width: 18rem;
+        height: 13rem;
+    }
+    .card__number {
+        width: 70%;
+}
+
+}
+
+/* card carousel */

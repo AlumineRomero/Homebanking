@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferencias</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Giga&family=Poppins:wght@300&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/978a01b828.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./assets/styles/styleDarkMode.css">
+    <link rel="stylesheet" href="./assets/styles/styleLoader.css">
+    <link rel="stylesheet" href="./assets/styles/styles.css">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
+</head>
+
+<body id="app" class="container-fluid d-flex p-0">
+    <header class="col-3 col-lg-2">
+        <nav class="container-fluid " id="nav">
+            <div class="row flex-nowrap">
+                <div class="col-12 px-0">
+                    <div
+                        class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="#"
+                            class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                            <span class="fs-5 d-none d-sm-inline aluBank">MontBank</span>
+                        </a>
+                        <div class="dropdown pb-4">
+                            <a href="#"
+                                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHgwL4r2DN1qg91OOqIViiv0Uxw-9yqo-PiQ&usqp=CAU"
+                                    alt="hugenerd" width="30" height="30" class="rounded-circle">
+                                <span class="d-none d-sm-inline mx-1">{{client.name}} {{client.lastName}}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+                                aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="#" @click="areYouSure">Cerrar sesión</a></li>
+                            </ul>
+                        </div>
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                            id="menu">
+                            <li class="nav-item">
+                                <a href="./accounts.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Inicio</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./cards.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-credit-card"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Tarjetas</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./loans.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-piggy-bank"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Prestamos</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="social-media container d-flex flex-wrap">
+                                    <a class="icon-mode" @click="darkMode('dark')"><i class="fas fa-moon"></i></a>
+                                    <a class="icon-mode" @click="darkMode('light')"><i class="fas fa-sun"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="col-9 col-lg-10 container-fluid d-flex flex-wrap align-items-center justify-content-center gap-1"
+        id="main">
+        <form action="" @submit.prevent="confirmTransaction"
+            class="transacciones container d-flex flex-column justify-content-evenly align-items-center m-5 p-3 createCards"
+            id="createTransfers">
+            <h2 class="text-center">Realizar una transferencia</h2>
+            <div class="container d-flex flex-column">
+                <label for="sourceAccounts">Cuenta de origen</label>
+                <select name="accounts" id="sourceAccounts" v-model="sourceNumber" class="form-select"
+                    @change="findSourceAccount">
+                    <option value="" selected>--</option>
+                    <option :value="account.number" v-for="account in accounts">
+                        {{account.number}}</option>
+                </select>
+            </div>
+            <div class="container d-flex flex-column">
+                <h6>Cuenta de destino</h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="account" id="otherAccount" value="otherAccount"
+                        v-model="selectAccount">
+                    <label class="form-check-label" :class="formInput" for="otherAccount">
+                        Terceros
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="account" id="ownAccount" value="ownAccount"
+                        v-model="selectAccount">
+                    <label class="form-check-label" :class="formInput" for="ownAccount">
+                        Cuenta Propia
+                    </label>
+                </div>
+            </div>
+            <div v-if="selectAccount == 'ownAccount'" class="container d-flex flex-column">
+                <label for="sourceAccounts">Cuenta de destino</label>
+                <select name="accounts" id="sourceAccounts" v-model="destinationNumber" class="form-select"
+                    @change="getDestinationClient" required>
+                    <option value="" selected>--</option>
+                    <option :value="account.number" v-for="account in accounts"
+                        :disabled="sourceNumber == account.number">
+                        {{account.number}}</option>
+                </select>
+            </div>
+            <div v-if="selectAccount == 'otherAccount'" class="container d-flex flex-column">
+                <input class="form-control" type="text" placeholder="Ingrese el número de cuenta de destino"
+                    v-model="destinationNumber" @focusout="getDestinationClient" required>
+            </div>
+            <div class="container d-flex flex-column" v-if="selectAccount == 'otherAccount'">
+                <span>Transferir a: {{destinationClient.name}} {{destinationClient.lastName}}</span>
+                <span>Email: {{destinationClient.email}}</span>
+            </div>
+            <div class="container d-flex flex-column" v-for="account in sourceAccount">
+                <input class="form-control" type="number" min="0.00" :max="account.balance" step="0.05" value="1.00"
+                    placeholder="Monto a transferir" v-model="amount" required>
+                <span>Tenés disponible: {{moneyFormat.format(account.balance)}}</span>
+            </div>
+            <div class="container d-flex flex-column">
+                <select name="description" id="description" v-model="description" class="form-select" required>
+                    <option value="" selected>Descripcion</option>
+                    <option value="varios">Varios</option>
+                    <option value="alquiler">Alquiler</option>
+                    <option value="cuota">Cuota</option>
+                    <option value="expensas">Expensas</option>
+                    <option value="factura">Factura</option>
+                    <option value="haberes">Haberes</option>
+                    <option value="honorarios">Honorarios</option>
+                    <option value="prestamo">Préstamo</option>
+                    <option value="seguro">Seguro</option>
+                </select>
+
+            </div>
+            <input type="submit" value="Transferir" class="btn button">
+        </form>
+
+    </main>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/transfers.js"></script>
+</body>
+
+</html>

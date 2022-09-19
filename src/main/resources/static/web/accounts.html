@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Giga&family=Poppins:wght@300&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/978a01b828.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./assets/styles/styleDarkMode.css">
+    <link rel="stylesheet" href="./assets/styles/styleLoader.css">
+    <link rel="stylesheet" href="./assets/styles/styles.css">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
+</head>
+
+<body id="app" class="container-fluid d-flex p-0">
+    <header class="col-3 col-lg-2">
+        <nav class="container-fluid " id="nav">
+            <div class="row flex-nowrap">
+                <div class="col-12 px-0">
+                    <div
+                        class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="#"
+                            class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                            <span class="fs-5 d-none d-sm-inline aluBank">MontBank</span>
+                        </a>
+                        <div class="dropdown pb-4">
+                            <a href="#"
+                                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHgwL4r2DN1qg91OOqIViiv0Uxw-9yqo-PiQ&usqp=CAU"
+                                    alt="hugenerd" width="30" height="30" class="rounded-circle">
+                                <span class="d-none d-sm-inline mx-1">{{client.name}} {{client.lastName}}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+                                aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="#" @click="areYouSure">Cerrar sesión</a></li>
+                            </ul>
+                        </div>
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                            id="menu">
+                            <li class="nav-item">
+                                <a href="./accounts.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Inicio</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./cards.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-credit-card"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Tarjetas</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./loans.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-piggy-bank"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Prestamos</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="social-media container d-flex flex-wrap">
+                                    <a class="icon-mode" @click="darkMode('dark')"><i class="fas fa-moon"></i></a>
+                                    <a class="icon-mode" @click="darkMode('light')"><i class="fas fa-sun"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main
+        class="col-9 col-lg-10 container-fluid d-flex flex-column flex-lg-row flex-lg-wrap align-items-lg-start align-items-center justify-content-start gap-1"
+        id="main">
+        <div class="transacciones container d-flex flex-column align-items-center justify-content-evenly gap-3 p-3 my-2 mx-0 col-lg-5"
+            id="cuentas">
+            <h2 class="col-12 text-center">Tus cuentas</h2>
+            <div class="text-center col-12 card cardTran" id="cardTotal">
+                <h5 class="card-title">Tenés disponible</h5>
+                <h4 class="card-text">{{moneyFormat.format(totalBalance)}}</h4>
+                <button class="btn transferBtn">
+                    <a href="./transfers.html"
+                        class="container d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-cash-coin"></i>
+                        <p>Transferir</p>
+                    </a>
+                </button>
+            </div>
+            <div class="col-10 col-md-5 d-flex flex-column align-items-center gap-2">
+                <div class="card-body card cardTran" v-for="account in client.accounts" id="cardsLight">
+                    <div class="container d-flex justify-content-around">
+                        <span class="card-title" :id="account.id">N°: {{account.number}}</span>
+                        <i class="bi bi-clipboard copy" id="copy" @click="copyAccountNum(account.id)"></i>
+                    </div>
+                    <span class="card-text">{{account.type}}</span>
+                    <h4 class="card-text">{{moneyFormat.format(account.balance)}}</h4>
+                    <a :href="'./account.html?idClient=' + client.id + '&idAccount=' + account.id"><button
+                            class="btn text-white button"><i class="bi bi-chevron-double-right"></i></button></a>
+                </div>
+            </div>
+            <button class="btn transferBtn container d-flex flex-column align-items-center justify-content-center"
+                @click="chooseAccountType" v-if="accounts.length < 3">
+                <i class="bi bi-plus-square"></i>
+                <p>Añadir cuenta</p>
+            </button>
+        </div>
+        <div class="container d-flex flex-column align-items-center mx-0 my-2 col-lg-3 gap-2">
+            <div class="transacciones container d-flex flex-column align-items-center justify-content-around gap-3  "
+                id="prestamos">
+                <div class="col-10 col-md-5 d-flex flex-column align-items-center gap-2">
+                    <h4 class="col-12 text-center">Prestamos activos</h4>
+                    <div class="card-body card cardTran" v-if="loans.length == 0">
+                        <h6 class="card-text text-center">No posee prestamos activos</h6>
+                    </div>
+                    <div v-else="">
+                        <div class="card-body card cardTran mb-1" v-for="loan in loans">
+                            <h5 class="card-title">{{loan.name}}</h5>
+                            <h6 class="card-text">{{moneyFormat.format(loan.amount)}}</h6>
+                            <span class="card-text">Cuotas: {{loan.payments}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="transacciones container d-flex flex-column align-items-center justify-content-around gap-3"
+                id="tarjetas">
+                <div class="col-10 col-md-5 d-flex flex-column align-items-center gap-2">
+                    <h4 class="col-12 text-center">Tarjetas activas</h4>
+                    <div class="card-body card cardTran" v-if="cards.length == 0">
+                        <h6 class="card-title text-center">No posee tarjetas activas</h6>
+                    </div>
+                    <div v-else="">
+                        <table class="table table-responsive text-white tableCards">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Color</th>
+                                    <th scope="col">Expiracion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="card in cards" class="cardsInfo position-relative">
+                                    <td>
+                                        {{card.type}}
+                                        <a :href="'./cards.html?id=' + client.id">
+                                            <span class="cardDetails"></span>
+                                        </a>
+                                    </td>
+                                    <td>{{card.color}}</td>
+                                    <td>{{dateFormat.format(new Date(card.thruDate))}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 container d-flex flex-column justify-content-around align-items-center mx-0 my-2">
+            <div class="transacciones container d-flex flex-column justify-content-around align-items-center"
+                id="transactionsLanding">
+                <h3 class="text-center col-12 pb-3">Movimientos de tus cuentas</h3>
+                <table class="table text-white tableCards" v-if="transactions.length != 0">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Monto</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="transaction in transactions">
+                            <td>
+                                <i class="bi bi-arrow-up" v-if="transaction.type == 'CREDIT'"></i>
+                                <i class="bi bi-arrow-down" v-else=""></i>
+                            </td>
+                            <td>{{transaction.type}}</td>
+                            <td :class="transaction.type == 'DEBIT' ? 'debit' : 'credit'">
+                                {{moneyFormat.format(transaction.amount)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5 v-else>Aún no se ha realizado ningun movimiento en tu cuenta</h5>
+            </div>
+            <div class="illustration">
+                <img src="./assets/img/ilustracion.svg" alt="">
+            </div>
+        </div>
+    </main>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/accounts.js"></script>
+</body>
+
+</html>

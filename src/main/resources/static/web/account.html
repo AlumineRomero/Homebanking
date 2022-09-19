@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Giga&family=Poppins:wght@300&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/978a01b828.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./assets/styles/styles.css">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body id="app" class="container-fluid d-flex p-0">
+
+    <header class="col-2 col-sm-3 col-lg-2">
+        <nav class="container-fluid " id="nav">
+            <div class="row flex-nowrap">
+                <div class="col-12 px-0">
+                    <div
+                        class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="#"
+                            class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                            <span class="fs-5 d-none d-sm-inline aluBank">MontBank</span>
+                        </a>
+                        <div class="dropdown pb-4">
+                            <a href="#"
+                                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHgwL4r2DN1qg91OOqIViiv0Uxw-9yqo-PiQ&usqp=CAU"
+                                    alt="hugenerd" width="30" height="30" class="rounded-circle">
+                                <span class="d-none d-sm-inline mx-1">{{client.name}} {{client.lastName}}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
+                                aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="#" @click="areYouSure">Cerrar sesión</a></li>
+                            </ul>
+                        </div>
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+                            id="menu">
+                            <li class="nav-item">
+                                <a href="./accounts.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Inicio</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./cards.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-credit-card"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Tarjetas</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./loans.html" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-piggy-bank"></i> <span
+                                        class="ms-1 d-none d-sm-inline">Prestamos</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="social-media container d-flex flex-wrap">
+                                    <a class="icon-mode" @click="darkMode('dark')"><i class="fas fa-moon"></i></a>
+                                    <a class="icon-mode" @click="darkMode('light')"><i class="fas fa-sun"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="col-10 col-sm-9 col-lg-10 container-fluid d-flex align-items-center justify-content-center"
+        id="main">
+        <div class="container d-flex flex-column align-items-center justify-content-center col-8 
+        p-3 gap-2">
+            <div class="container d-flex flex-wrap align-items-center justify-content-evenly transacciones" id="pdf" v-if="transactions.length > 0">
+                <h3 class="text-center col-12 mb-3">Descargá el resumen de tu cuenta</h3>
+                <p class="text-center col-12 mb-3">Podés obtener el resumen de las transacciones entre dos fechas o descargar un resumen completo de tu cuenta presionando sólo descargar</p>
+                <div class="form-check col-md-6 col-12">
+                    <label class="form-label text-center" for="startDate">Desde: </label>
+                    <input type="datetime-local" class="form-control" name="startDate" id="startDate"
+                        v-model="startDate">
+                </div>
+                <div class="form-check col-md-6 col-12">
+                    <label class="form-label text-center" for="endDate">Hasta: </label>
+                    <input type="datetime-local" class="form-control" name="endDate" id="endDate" v-model="endDate">
+                </div>
+                <button class="btn btn-solid text-white my-3"><a
+                        :href="'/api/transactions/current?accountNumber=' + account.number + '&start=' + startDate + '&end=' + endDate"
+                        id="accountResume">Descargar resumen</a></button>
+            </div>
+            <h2 class="text-center col-12 pb-3 titles">Movimientos de tu cuenta</h2>
+            <table class="text-white tablaTransaction m-0" id="table" v-if="transactions.length != 0">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Descripcion</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="transaction in transactions">
+                        <td>
+                            <i class="bi bi-arrow-up" v-if="transaction.type == 'CREDIT'"></i>
+                            <i class="bi bi-arrow-down" v-else=""></i>
+                        </td>
+                        <td>{{transaction.type}}</td>
+                        <td :class="transaction.type == 'DEBIT' ? 'debit' : 'credit'">
+                            {{moneyFormat.format(transaction.amount)}}</td>
+                        <td>{{dateFormat.format(new Date(transaction.date))}}</td>
+                        <td>{{transaction.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 v-else="" class="titles">Aún no se ha realizado ningun movimiento en tu cuenta</h5>
+            <button class="btn btn-solid text-white titles btnCard" @click="confirmDeleteAccount" v-if="account.balance == 0">Eliminar cuenta</button>
+
+        </div>
+    </main>
+    
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="./assets/js/account.js"></script>
+
+</body>
+
+</html>
