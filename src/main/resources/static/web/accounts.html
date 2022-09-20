@@ -115,6 +115,13 @@
                     <h4 class="col-12 text-center">Prestamos activos</h4>
                     <div class="card-body card cardTran" v-if="loans.length == 0">
                         <h6 class="card-text text-center">No posee prestamos activos</h6>
+                        <button class="btn transferBtn">
+                            <a href="./loans.html"
+                                class="container d-flex flex-column align-items-center justify-content-center">
+                                <i class="bi bi-plus-square"></i>
+                                <p>Solicitar Préstamo</p>
+                            </a>
+                        </button>
                     </div>
                     <div v-else="">
                         <div class="card-body card cardTran mb-1" v-for="loan in loans">
@@ -131,6 +138,13 @@
                     <h4 class="col-12 text-center">Tarjetas activas</h4>
                     <div class="card-body card cardTran" v-if="cards.length == 0">
                         <h6 class="card-title text-center">No posee tarjetas activas</h6>
+                        <button class="btn transferBtn">
+                            <a href="./cards.html"
+                                class="container d-flex flex-column align-items-center justify-content-center">
+                                <i class="bi bi-plus-square"></i>
+                                <p>Solicitar Tarjetas</p>
+                            </a>
+                        </button>
                     </div>
                     <div v-else="">
                         <table class="table table-responsive text-white tableCards">
